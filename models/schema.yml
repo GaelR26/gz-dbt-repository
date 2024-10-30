@@ -19,7 +19,7 @@ sources:
             description: quantité vendue
         tests:
           - unique:
-              column_name:  "(orders_id ||'-'|| products_id)"
+              column_name:  "(orders_id ||'-'|| pdt_id)"
       - name: product
         identifier: raw_gz_product
         description: produit de Greenweez / détail produits prix
@@ -28,7 +28,7 @@ sources:
             description: identifiant du produit
             tests:
             - unique
-            - not null             
+            - not_null             
           - name: purchase_price
             description: prix produit
 
@@ -40,7 +40,7 @@ sources:
             description: identifiant commande
             tests:
             - unique
-            - not null              
+            - not_null              
           - name: shipping_fee
             description: frais de livraison
           - name: logcost

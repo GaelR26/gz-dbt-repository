@@ -1,7 +1,22 @@
-SELECT *,
-ROUND((quantity * purchase_price),2) AS purchase_cost,
-ROUND((revenue - (quantity * purchase_price)),2) AS margin
-FROM {{ ref("stg_raw__sales")}} AS sales
-INNER JOIN {{ ref("stg_raw__product")}} AS product
-ON sales.products_id=product.products_id
-SAVE AS sales_margin
+WITH sales_data AS (
+    SELECT
+        sales.orders_id,
+        sales.products_id,
+        date_date,
+        CAST(sales.quantity AS FLOAT64) AS quantity,
+        CAST(sales.revenue AS FLOAT64) AS revenue,
+        CAST(product.purchase_price AS FLOAT64) AS purchase_price
+    FROM {{ ref('stg_raw__sales') }} AS sales
+    JOIN {{ ref('stg_raw__product') }} AS product
+    ON sales.products_id = product.products_id
+)
+SELECT
+    orders_id,
+    products_id,
+    date_date,
+    quantity,
+    revenue,
+    purchase_price,
+    quantity * purchase_price AS purchase_cost,  -- Calculate purchase cost
+    revenue - (quantity * purchase_price) AS margin  -- Calculate margin
+FROM sales_data

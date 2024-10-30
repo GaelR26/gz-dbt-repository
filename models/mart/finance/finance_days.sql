@@ -9,5 +9,5 @@ ROUND(SUM(purchase_cost),2) AS purchase_cost,
 ROUND((SUM(shipping_fee)),2) AS shipping_fees,
 ROUND((SUM(logcost)),2) AS log_cost,
 ROUND((SUM(quantity)),2) AS total_products_sold
-FROM quick-woodland-438610-c4.dbt_grajendrakumar.int_orders_operational
+FROM {{ ref('int_orders_operational') }}
 GROUP BY date_date
